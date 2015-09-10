@@ -1,0 +1,22 @@
+{
+    "name": "portonefive/essentials",
+    "description": "",
+    "authors": [
+        {
+            "name": "Jeff Berry",
+            "email": "jeff@portonefive.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "illuminate/html": "5.0.*@dev",
+        "raveren/kint": "1.0.*",
+        "portonefive/tabulator" : "@dev"
+    },
+    "autoload": {
+        "psr-4": {
+            "PortOneFive\\Essentials\\": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}
