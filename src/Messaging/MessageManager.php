@@ -1,112 +1,107 @@
 <?php namespace PortOneFive\Essentials\Messaging;
 
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Session\Store;
 use Illuminate\Support\Collection;
+use Illuminate\Http\RedirectResponse;
 
+/**
+ * Class MessageManager
+ *
+ * @package PortOneFive\Essentials\Messaging
+ */
 class MessageManager
 {
 
     /**
-     * @var array
+     * The session writer.
+     *
+     * @var Store
      */
-    protected static $bags = ['error', 'notice', 'alert', 'message'];
-
+    private $session;
+    /**
+     * @var Application
+     */
+    private $app;
     /**
      * @var Collection
      */
-    protected $messageBags = [];
+    private $messages;
 
     /**
-     * @var
+     * Create a new flash notifier instance.
+     *
+     * @param Store       $session
+     * @param Application $app
      */
-    protected $session;
-
-    /**
-     * @param Store $session
-     */
-    public function __construct(Store $session)
+    function __construct(Store $session, Application $app)
     {
         $this->session = $session;
+        $this->app     = $app;
 
-        $this->messageBags = new Collection($this->session->pull('__bags', []));
+        $this->messages = $this->session->pull('__messages', new Collection());
 
-        app('router')->after(
-            function ($request, $response) {
-                if ($response instanceof RedirectResponse) {
-
-                    if ($response->getSession()->has('errors')) {
-                        $errors = $response->getSession()->get('errors')->getBag('default')->getMessages();
-
-                        foreach ($errors as $error) {
-                            $this->add('notice', current($error), ['class' => 'warning']);
-                        }
-                    }
-
-                    $this->flash();
-                }
+        if ($this->session->has('errors')) {
+            $errors = $this->session->get('errors')->getBag('default')->getMessages();
+            foreach ($errors as $error) {
+                $this->add(['message' => current($error), 'type' => 'info', 'class' => 'warning'], false);
             }
-        );
-    }
-
-    /**
-     * @param       $bag
-     * @param       $message
-     * @param array $attributes
-     *
-     * @return MessageManager
-     * @throws \Exception
-     */
-    public function add($bag, $message, $attributes = [])
-    {
-        $this->assertValidBag($bag);;
-
-        $this->messageBags->put(
-            $bag,
-            $this->messageBags->get($bag, new Collection)->push(array_merge(['message' => $message], $attributes))
-        );
-
-        return $this;
-    }
-
-    /**
-     * @return Collection
-     */
-    public function all()
-    {
-        return $this->messageBags;
-    }
-
-    public function flash()
-    {
-        $this->session->flash('__bags', $this->messageBags->all());
-
-        return $this;
-    }
-
-    public function flush()
-    {
-        $bags = $this->session->get('__bags', new Collection);
-
-        $this->session->forget('__bags');
-
-        return $bags;
-    }
-
-    protected function assertValidBag($bag)
-    {
-        if ( ! $this->isValidBag($bag)) {
-            throw new \Exception("Invalid message bag [{$bag}]");
         }
     }
 
-    /**
-     * @param $bag
-     *
-     * @return bool
-     */
-    protected function isValidBag($bag)
+    public function info($message, $class = 'info', $timeOut = 400)
     {
-        return in_array($bag, self::$bags);
+        $this->add(['type' => __METHOD__, 'message' => $message, 'class' => $class, 'timeOut' => $timeOut]);
+
+        return $this;
+    }
+
+    public function success($message, $class = 'success', $timeOut = 400)
+    {
+        $this->add(['type' => __METHOD__, 'message' => $message, 'class' => $class, 'timeOut' => $timeOut]);
+
+        return $this;
+    }
+
+    public function error($message, $title = '', $class = 'error')
+    {
+        $this->add(['type' => __METHOD__, 'message' => $message, 'title' => $title, 'class' => $class]);
+
+        return $this;
+    }
+
+    public function warning($message, $class = 'warning', $timeOut = 400)
+    {
+        $this->add(['type' => __METHOD__, 'message' => $message, 'class' => $class, 'timeOut' => $timeOut]);
+
+        return $this;
+    }
+
+    public function overlay($message, $title = '', $class = 'warning')
+    {
+        $this->add(['type' => __METHOD__, 'message' => $message, 'class' => $class, 'title' => $title]);
+
+        return $this;
+    }
+
+    public function add(array $message, $flash = true)
+    {
+        $this->messages->push($message);
+
+        if ($flash) {
+            $this->session->flash('__messages', $this->messages);
+        }
+
+        return $this;
+    }
+
+    public function any()
+    {
+        return ! $this->messages->isEmpty();
+    }
+
+    public function all()
+    {
+        return $this->messages->all();
     }
 }

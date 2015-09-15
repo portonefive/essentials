@@ -40,7 +40,7 @@ if ( ! function_exists('messages')) {
         return app('messages');
     }
 }
-if ( ! function_exists('alert')) {
+if ( ! function_exists('success')) {
     /**
      * @param        $message
      * @param string $class
@@ -48,9 +48,9 @@ if ( ! function_exists('alert')) {
      *
      * @return MessageManager
      */
-    function alert($message, $class = 'success', $timeOut = 2000)
+    function success($message, $class = 'success', $timeOut = 2000)
     {
-        return messages()->add('alert', $message, ['class' => $class, 'timeOut' => $timeOut]);
+        return messages()->success($message, $class, $timeOut);
     }
 }
 
@@ -64,33 +64,34 @@ if ( ! function_exists('notify')) {
      */
     function notify($message, $class = 'info', $timeOut = 5000)
     {
-        return messages()->add('notice', $message, ['class' => $class, 'timeOut' => $timeOut]);
+        return messages()->info($message, $class, $timeOut);
     }
 }
 
 if ( ! function_exists('error')) {
     /**
      * @param        $message
-     * @param        $title
-     *
-     * @return MessageManager
-     */
-    function error($message, $title = 'The following error occurred')
-    {
-        return messages()->add('error', $message, ['title' => $title]);
-    }
-}
-
-if ( ! function_exists('message')) {
-    /**
-     * @param        $message
-     * @param        $title
+     * @param string $title
      * @param string $class
      *
      * @return MessageManager
      */
-    function message($message, $title, $class = 'info')
+    function error($message, $title = 'The following error occurred', $class = 'error')
     {
-        return messages()->add('message', $message, ['title' => $title, 'class' => $class]);
+        return messages()->error($message, $title, $class);
     }
 }
+
+//if ( ! function_exists('message')) {
+//    /**
+//     * @param        $message
+//     * @param        $title
+//     * @param string $class
+//     *
+//     * @return MessageManager
+//     */
+//    function message($message, $title, $class = 'info')
+//    {
+//        return messages()->add('message', $message, ['title' => $title, 'class' => $class]);
+//    }
+//}
