@@ -56,19 +56,18 @@ class Router extends \Illuminate\Routing\Router
 
         list($response, $sections) = $response->render(
             function ($view, $contents) use ($layout) {
-
-                $sections = $view->getFactory()->getSections();
-                $content  = view($layout, ['html' => $contents], $view->getData());
-
-                if (is_array($sections)) {
-                    foreach ($sections as $sectionId => $sectionContent) {
-                        $content->getFactory()->inject($sectionId, $sectionContent);
-                    }
-                }
-
-                return [$content, $sections];
+                return [
+                    view($layout, ['html' => $contents, '_originalTemplateName' => $view->getName()], $view->getData()),
+                    $view->getFactory()->getSections()
+                ];
             }
         );
+
+        if (is_array($sections)) {
+            foreach ($sections as $sectionId => $sectionContent) {
+                $response->getFactory()->startSection($sectionId, $sectionContent);
+            }
+        }
 
         if ($request instanceof Request && $request->wantsJson()) {
             $response = [
