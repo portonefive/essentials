@@ -51,35 +51,35 @@ class MessageManager
 
     public function info($message, $class = 'info', $timeOut = 400)
     {
-        $this->add(['type' => __METHOD__, 'message' => $message, 'class' => $class, 'timeOut' => $timeOut]);
+        $this->add(['type' => __FUNCTION__, 'message' => $message, 'class' => $class, 'timeOut' => $timeOut]);
 
         return $this;
     }
 
     public function success($message, $class = 'success', $timeOut = 400)
     {
-        $this->add(['type' => __METHOD__, 'message' => $message, 'class' => $class, 'timeOut' => $timeOut]);
+        $this->add(['type' => __FUNCTION__, 'message' => $message, 'class' => $class, 'timeOut' => $timeOut]);
 
         return $this;
     }
 
     public function error($message, $title = '', $class = 'error')
     {
-        $this->add(['type' => __METHOD__, 'message' => $message, 'title' => $title, 'class' => $class]);
+        $this->add(['type' => __FUNCTION__, 'message' => $message, 'title' => $title, 'class' => $class]);
 
         return $this;
     }
 
     public function warning($message, $class = 'warning', $timeOut = 400)
     {
-        $this->add(['type' => __METHOD__, 'message' => $message, 'class' => $class, 'timeOut' => $timeOut]);
+        $this->add(['type' => __FUNCTION__, 'message' => $message, 'class' => $class, 'timeOut' => $timeOut]);
 
         return $this;
     }
 
     public function overlay($message, $title = '', $class = 'warning')
     {
-        $this->add(['type' => __METHOD__, 'message' => $message, 'class' => $class, 'title' => $title]);
+        $this->add(['type' => __FUNCTION__, 'message' => $message, 'class' => $class, 'title' => $title]);
 
         return $this;
     }
