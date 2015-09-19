@@ -73,6 +73,7 @@ class Router extends \Illuminate\Routing\Router
             $response = [
                 'messages' => messages()->all(),
                 'title'    => ! empty($response['title']) ? $response['title'] : null,
+                'data' => $response->getData(),
                 'response' => [
                     'html'     => $response['html'],
                     'sections' => is_array($sections) ? $sections : [],
