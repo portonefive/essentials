@@ -49,7 +49,7 @@ class MessageManager
         }
     }
 
-    public function info($message, $class = 'info', $timeOut = 400)
+    public function notify($message, $class = 'info', $timeOut = 400)
     {
         $this->add(['type' => __FUNCTION__, 'message' => $message, 'class' => $class, 'timeOut' => $timeOut]);
 
@@ -103,5 +103,10 @@ class MessageManager
     public function all()
     {
         return $this->messages->all();
+    }
+
+    public function flush()
+    {
+        return $this->session->pull('__messages', new Collection);
     }
 }

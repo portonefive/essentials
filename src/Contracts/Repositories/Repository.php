@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 
 interface Repository
 {
+
     /**
      * @param array         $columns
      * @param array         $with
@@ -82,10 +83,8 @@ interface Repository
 
     /**
      * @param Model $model
-
-
-*
-*@return bool|null
+     *
+     * @return bool|null
      * @throws \Exception
      */
     public function destroy(Model $model);

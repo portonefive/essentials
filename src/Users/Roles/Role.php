@@ -5,7 +5,6 @@ use PortOneFive\Essentials\Users\Permissions\Permission;
 
 class Role extends Model
 {
-
     public $incrementing = false;
 
     public $timestamps = false;

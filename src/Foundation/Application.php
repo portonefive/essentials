@@ -3,9 +3,10 @@
 namespace PortOneFive\Essentials\Foundation;
 
 use Illuminate\Events\EventServiceProvider;
+use Illuminate\Foundation\Application as BaseApplication;
 use PortOneFive\Essentials\Routing\RoutingServiceProvider;
 
-class Application extends \Illuminate\Foundation\Application
+class Application extends BaseApplication
 {
     /**
      * Register all of the base service providers.

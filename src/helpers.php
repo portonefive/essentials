@@ -1,12 +1,13 @@
 <?php
-use PortOneFive\Essentials\Messaging\MessageManager;
+
+use Illuminate\Contracts\Auth\Access\Gate;
 
 if ( ! function_exists('visitor')) {
     /**
      * @param null                 $key
      *
      * @var \Illuminate\Auth\Guard $auth
-     * @return \Illuminate\Auth\Authenticatable|bool|mixed
+     * @return \PortOneFive\Essentials\Users\User|false
      */
     function visitor($key = null)
     {
@@ -24,6 +25,26 @@ if ( ! function_exists('visitor')) {
     }
 }
 
+if ( ! function_exists('can')) {
+    /**
+     * @var \Illuminate\Auth\Guard $auth
+     *
+     * @param array                $arguments
+     *
+     * @return false|\PortOneFive\Essentials\Users\User
+     */
+    function can($ability, $arguments = [])
+    {
+        if (is_string($ability)) {
+            list($ability, $arguments) = [$ability, $arguments];
+        } else {
+            list($ability, $arguments) = [debug_backtrace(false, 3)[2]['function'], $ability];
+        }
+
+        return app(Gate::class)->check($ability, $arguments);
+    }
+}
+
 if ( ! function_exists('percentage')) {
     function percentage($amount, $total)
     {
@@ -33,7 +54,7 @@ if ( ! function_exists('percentage')) {
 
 if ( ! function_exists('messages')) {
     /**
-     * @return MessageManager
+     * @return \PortOneFive\Essentials\Messaging\MessageManager
      */
     function messages()
     {
@@ -46,7 +67,7 @@ if ( ! function_exists('success')) {
      * @param string $class
      * @param int    $timeOut
      *
-     * @return MessageManager
+     * @return \PortOneFive\Essentials\Messaging\MessageManager
      */
     function success($message, $class = 'success', $timeOut = 2000)
     {
@@ -60,11 +81,11 @@ if ( ! function_exists('notify')) {
      * @param string $class
      * @param int    $timeOut
      *
-     * @return MessageManager
+     * @return \PortOneFive\Essentials\Messaging\MessageManager
      */
     function notify($message, $class = 'info', $timeOut = 5000)
     {
-        return messages()->info($message, $class, $timeOut);
+        return messages()->notify($message, $class, $timeOut);
     }
 }
 
@@ -74,7 +95,7 @@ if ( ! function_exists('error')) {
      * @param string $title
      * @param string $class
      *
-     * @return MessageManager
+     * @return \PortOneFive\Essentials\Messaging\MessageManager
      */
     function error($message, $title = 'The following error occurred', $class = 'error')
     {
@@ -82,16 +103,16 @@ if ( ! function_exists('error')) {
     }
 }
 
-//if ( ! function_exists('message')) {
-//    /**
-//     * @param        $message
-//     * @param        $title
-//     * @param string $class
-//     *
-//     * @return MessageManager
-//     */
-//    function message($message, $title, $class = 'info')
-//    {
-//        return messages()->add('message', $message, ['title' => $title, 'class' => $class]);
-//    }
-//}
+if ( ! function_exists('overlay')) {
+    /**
+     * @param        $message
+     * @param        $title
+     * @param string $class
+     *
+     * @return \PortOneFive\Essentials\Messaging\MessageManager
+     */
+    function overlay($message, $title, $class = 'info')
+    {
+        return messages()->overlay($message, $title, $class);
+    }
+}

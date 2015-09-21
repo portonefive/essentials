@@ -22,13 +22,6 @@ Blade::directive(
     }
 );
 
-Blade::directive(
-    'meta',
-    function ($expression) {
-        return "<?php HTML::addMetaData{$expression}; ?>";
-    }
-);
-
 /**
  * Custom blade tag to render queued javascript
  * Usage: @js
@@ -52,61 +45,13 @@ Blade::directive(
 );
 
 /**
- * Custom blade tag to render queued stylesheets
- * Usage: @css
- */
-Blade::directive(
-    'printmeta',
-    function ($expression) {
-        $replacement = "<?php foreach(HTML::getMetaData() as \$name => \$content) : ";
-        $replacement .= "echo \"<meta property=\\\"{\$name}\\\" content=\\\"{\$content}\\\">\";";
-        $replacement .= "endforeach; ?>";
-
-        return $replacement;
-    }
-);
-
-/**
- * Custom blade tag to set/override page title
- * Usage: @title('Page Title')
- */
-Blade::directive(
-    'title',
-    function ($expression) {
-        return "<?php HTML::setPageTitle{$expression}; ?>";
-    }
-);
-
-/**
- * Custom blade tag to set/override page title
- * Usage: @title('Page Title')
- */
-Blade::directive(
-    'titlevar',
-    function ($expression) {
-        return "<?php HTML::setPageTitleVariable{$expression}; ?>";
-    }
-);
-
-/**
- * Custom blade tag to get page title
- * Usage: @title('Page Title')
- */
-Blade::directive(
-    'printtitle',
-    function ($expression) {
-        return "<?= HTML::getPageTitle(); ?>";
-    }
-);
-
-/**
  * Custom blade tag to get render breadcrumbs
  * Usage: @title('Page Title')
  */
 Blade::directive(
     'breadcrumbs',
     function ($expression) {
-        return "<?= HTML::renderBreadcrumbs(); ?>";
+        return "<?= HTML::breadcrumb(); ?>";
     }
 );
 
@@ -117,34 +62,33 @@ Blade::directive(
 Blade::directive(
     'breadcrumb',
     function ($expression) {
-        return "<?php HTML::addBreadcrumb{$expression}; ?>";
+        return "<?php HTML::breadcrumb{$expression}; ?>";
     }
 );
 
 /**
  * Custom blade tags to determine whether user has a certain role
  * Usage:
- * @ifrole('role_slug')
+ * @role('role_slug')
  * @elseifrole('role_slug')
- *
- * @endifrole
+ * @endrole
  */
 Blade::directive(
-    'ifrole',
+    'role',
     function ($expression) {
-        return "<?php if (\$visitor->is{$expression}) : ?>";
+        return "<?php if (visitor() && visitor()->is{$expression}) : ?>";
     }
 );
 
 Blade::directive(
     'elseifrole',
     function ($expression) {
-        return "<?php elseif (\$visitor->is{$expression}) : ?>";
+        return "<?php elseif (visitor() && visitor()->is{$expression}) : ?>";
     }
 );
 
 Blade::directive(
-    'endifrole',
+    'endrole',
     function ($expression) {
         return "<?php endif; ?>";
     }
@@ -159,21 +103,21 @@ Blade::directive(
  * @endifrole
  */
 Blade::directive(
-    'ifcan',
+    'can',
     function ($expression) {
-        return "<?php if (\$visitor->can{$expression}) : ?>";
+        return "<?php if (visitor() && visitor()->can{$expression}) : ?>";
     }
 );
 
 Blade::directive(
     'elseifcan',
     function ($expression) {
-        return "<?php elseif (\$visitor->can{$expression}) : ?>";
+        return "<?php elseif (visitor() && visitor()->can{$expression}) : ?>";
     }
 );
 
 Blade::directive(
-    'endifcan',
+    'endcan',
     function ($expression) {
         return "<?php endif; ?>";
     }
@@ -188,7 +132,7 @@ Blade::directive(
  * @endifroute
  */
 Blade::directive(
-    'ifroute',
+    'route',
     function ($expression) {
         return "<?php if (Route::currentRouteName() == {$expression}) : ?>";
     }
@@ -202,7 +146,7 @@ Blade::directive(
 );
 
 Blade::directive(
-    'endifroute',
+    'endroute',
     function ($expression) {
         return "<?php endif; ?>";
     }

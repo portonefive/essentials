@@ -1,18 +1,16 @@
 <?php namespace PortOneFive\Essentials\Http\Controllers;
 
 use Illuminate\Contracts\Container\Container;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Session\Store;
-use PortOneFive\Essentials\MessageBag;
-use PortOneFive\Essentials\Messaging\SendsMessages;
 
 abstract class Controller extends BaseController
 {
-    use DispatchesJobs, ValidatesRequests, SendsMessages;
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     protected static $booted = false;
 
@@ -39,19 +37,35 @@ abstract class Controller extends BaseController
     }
 
     /**
-     * @return Request
-     */
-    protected static function request()
-    {
-        return self::$request;
-    }
-
-    /**
      * @param Request $request
      */
     public static function setRequest(Request $request)
     {
         self::$request = $request;
+    }
+
+    /**
+     * @param Store $session
+     */
+    public static function setSession(Store $session)
+    {
+        self::$session = $session;
+    }
+
+    /**
+     * @param Container $app
+     */
+    public static function setApp(Container $app)
+    {
+        self::$app = $app;
+    }
+
+    /**
+     * @return Request
+     */
+    protected static function request()
+    {
+        return self::$request;
     }
 
     /**
@@ -63,11 +77,29 @@ abstract class Controller extends BaseController
     }
 
     /**
-     * @param Store $session
+     * @return Container
      */
-    public static function setSession(Store $session)
+    protected static function app()
     {
-        self::$session = $session;
+        return self::$app;
+    }
+
+    /**
+     * @return null
+     */
+    public function getLayout()
+    {
+        return isset($this->layout) ? $this->layout : null;
+    }
+
+    /**
+     * @param string $confirmField
+     *
+     * @return bool
+     */
+    protected function isConfirmedPost($confirmField = '_confirm')
+    {
+        return ! $this->request()->isMethodSafe() && $this->request()->has($confirmField);
     }
 
     /**
@@ -82,21 +114,5 @@ abstract class Controller extends BaseController
         $controller = $this->app()->make($class);
 
         return $this->app()->call([$controller, $method], $arguments);
-    }
-
-    /**
-     * @return Container
-     */
-    protected static function app()
-    {
-        return self::$app;
-    }
-
-    /**
-     * @param Container $app
-     */
-    public static function setApp(Container $app)
-    {
-        self::$app = $app;
     }
 }

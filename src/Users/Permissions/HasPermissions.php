@@ -52,7 +52,7 @@ trait HasPermissions
      *
      * @return bool
      */
-    public function can($permissions)
+    public function hasPermission($permissions)
     {
         $userPermissions = $this->getPermissions();
         $orPermissions   = explode('|', $permissions);
