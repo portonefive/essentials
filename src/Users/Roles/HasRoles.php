@@ -9,7 +9,7 @@ trait HasRoles
      */
     public function is($roles)
     {
-        $userRoles = $this->roles()->lists('id')->all();
+        $userRoles = $this->roles->lists('id')->all();
         $orRoles   = explode('|', $roles);
 
         foreach ($orRoles as $role) {

@@ -14,16 +14,13 @@ abstract class Controller extends BaseController
 
     protected static $booted = false;
 
-    /** @var Container */
-    protected static $app;
-
     /** @var Store */
     protected static $session;
 
     /** @var Request */
     protected static $request;
 
-    public static function boot(Container $app, Store $session, Request $request)
+    public static function boot(Store $session, Request $request)
     {
         if (self::$booted) {
             return;
@@ -31,7 +28,6 @@ abstract class Controller extends BaseController
 
         self::$booted = true;
 
-        self::setApp($app);
         self::setSession($session);
         self::setRequest($request);
     }
@@ -53,14 +49,6 @@ abstract class Controller extends BaseController
     }
 
     /**
-     * @param Container $app
-     */
-    public static function setApp(Container $app)
-    {
-        self::$app = $app;
-    }
-
-    /**
      * @return Request
      */
     protected static function request()
@@ -77,11 +65,13 @@ abstract class Controller extends BaseController
     }
 
     /**
+     * @param null $key
+     *
      * @return Container
      */
-    protected static function app()
+    protected static function app($key = null)
     {
-        return self::$app;
+        return app($key);
     }
 
     /**

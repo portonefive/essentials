@@ -1,5 +1,7 @@
 <?php namespace PortOneFive\Essentials\Users\Permissions;
 
+use PortOneFive\Essentials\Users\Roles\Role;
+
 trait HasPermissions
 {
     /**
@@ -40,7 +42,7 @@ trait HasPermissions
 
             $permissionGroups[$this->id] = array_merge(
                 $permissionGroups[$this->id],
-                $role->permissions()->lists('permission_group_id')->all()
+                $role->permissions->lists('permission_group_id')->all()
             );
         }
 
@@ -48,24 +50,13 @@ trait HasPermissions
     }
 
     /**
-     * @param $permissions
+     * @param $permission
      *
      * @return bool
      */
-    public function hasPermission($permissions)
+    public function hasPermission($permission)
     {
-        $userPermissions = $this->getPermissions();
-        $orPermissions   = explode('|', $permissions);
-
-        foreach ($orPermissions as $permission) {
-            $andPermissions = explode(',', $permission);
-
-            if (count(array_intersect($andPermissions, $userPermissions)) == count($andPermissions)) {
-                return true;
-            }
-        }
-
-        return false;
+        return in_array($permission, $this->getPermissions());
     }
 
     /**
@@ -82,10 +73,9 @@ trait HasPermissions
         $permissions[$this->id] = [];
 
         foreach ($this->roles as $role) {
-            $permissions[$this->id] = array_merge($permissions[$this->id], $role->permissions()->lists('id')->all());
+            $permissions[$this->id] = array_merge($permissions[$this->id], $role->permissions->lists('id')->all());
         }
 
         return $permissions[$this->id] = array_unique($permissions[$this->id]);
     }
-
 }

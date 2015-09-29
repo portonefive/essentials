@@ -11,6 +11,8 @@ class Role extends Model
 
     protected $fillable = ['id', 'title'];
 
+    protected $with = ['permissions'];
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */

@@ -1,8 +1,10 @@
 <?php namespace PortOneFive\Essentials;
 
+use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
+use PortOneFive\Essentials\Auth\Access\Gate;
 use PortOneFive\Essentials\Html\HtmlServiceProvider;
 use PortOneFive\Essentials\Http\Controllers\Controller;
 use PortOneFive\Essentials\Messaging\MessagingServiceProvider;
@@ -43,5 +45,9 @@ class EssentialsServiceProvider extends ServiceProvider
         $this->app->register(MessagingServiceProvider::class);
         $this->app->register(TabulatorServiceProvider::class);
         $this->app->register(HtmlServiceProvider::class);
+
+        $this->app->singleton(GateContract::class, function ($app) {
+            return new Gate($app, function () use ($app) { return $app['auth']->user(); });
+        });
     }
 }

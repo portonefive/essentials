@@ -5,6 +5,7 @@ namespace PortOneFive\Essentials\Users;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Contracts\Hashing\Hasher;
@@ -13,7 +14,9 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 use PortOneFive\Essentials\Eloquent\HasMetaTrait;
 use PortOneFive\Essentials\Events\RaisesEvents;
 use PortOneFive\Essentials\Users\Permissions\HasPermissions;
+use PortOneFive\Essentials\Users\Permissions\Permission;
 use PortOneFive\Essentials\Users\Roles\HasRoles;
+use PortOneFive\Essentials\Users\Roles\Role;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract
 {
