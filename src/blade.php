@@ -71,6 +71,7 @@ Blade::directive(
  * Usage:
  * @role('role_slug')
  * @elseifrole('role_slug')
+ *
  * @endrole
  */
 Blade::directive(
@@ -161,5 +162,35 @@ Blade::directive(
     function ($expression) {
         // $pattern     = '#@set\(\s*[\'|"]([a-zA-Z_0-9]+)[\'|"]\s*,\s*(.*)\s*\)#';
         return "<?php {$expression}; ?>";
+    }
+);
+
+/**
+ * Custom blade tag to render a ReactJS component
+ * Usage: @react('ComponentName', $arguments))
+ */
+Blade::directive(
+    'react',
+    function ($expression) {
+
+        $expression = substr($expression, 1);
+        $expression = substr($expression, 0, -1);
+
+        $expressionParts = explode(',', $expression, 2);
+
+        $componentName = $expressionParts[0];
+        $componentName = trim($componentName, '\'"');
+        $componentId   = uniqid($componentName . '_');
+        $arguments     = isset($expressionParts[1]) ? $expressionParts[1] : '[]';
+
+        return "
+<div id=\"{$componentId}\"></div>
+                <script>
+                    ReactDOM.render(
+                        React.createElement({$componentName}, <?php echo json_encode({$arguments}) ?>),
+                        document.getElementById('{$componentId}')
+                    );
+                </script>
+                ";
     }
 );
