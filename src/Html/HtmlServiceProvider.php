@@ -2,7 +2,7 @@
 
 namespace PortOneFive\Essentials\Html;
 
-class HtmlServiceProvider extends \Illuminate\Html\HtmlServiceProvider
+class HtmlServiceProvider extends \Collective\Html\HtmlServiceProvider
 {
 
     /**
@@ -23,8 +23,8 @@ class HtmlServiceProvider extends \Illuminate\Html\HtmlServiceProvider
 
         $this->registerFormBuilder();
 
-        $this->app->alias('html', 'Illuminate\Html\HtmlBuilder');
-        $this->app->alias('form', 'Illuminate\Html\FormBuilder');
+        $this->app->alias('html', 'Collective\Html\HtmlBuilder');
+        $this->app->alias('form', 'Collective\Html\FormBuilder');
     }
 
     /**
