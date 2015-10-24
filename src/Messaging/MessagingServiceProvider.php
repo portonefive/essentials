@@ -12,7 +12,7 @@ class MessagingServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bindShared(
+        $this->app->singleton(
             'messages',
             function () {
                 return $this->app->make(MessageManager::class);
