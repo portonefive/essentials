@@ -9,13 +9,9 @@ if ( ! function_exists('visitor')) {
      * @var \Illuminate\Auth\Guard $auth
      * @return \PortOneFive\Essentials\Users\User|false
      */
-    function visitor($key = null)
+     function visitor($key = null)
     {
-        static $auth;
-
-        if ( ! $auth) {
-            $auth = app('auth');
-        }
+        $auth = app('auth');
 
         if ( ! $auth->check()) {
             return false;
