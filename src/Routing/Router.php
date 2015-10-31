@@ -34,16 +34,13 @@ class Router extends \Illuminate\Routing\Router
             $response = new Response($response);
         }
 
-        $response->headers->set('Access-Control-Allow-Origin', '*');
         $response->headers->set('Access-Control-Allow-Credentials', 'true');
-
-        //$response->headers->set('Access-Control-Allow-Headers', 'X-XSRF-TOKEN');
 
         if ($request->isMethod('options')) {
             $headers = [
-                //'Access-Control-Allow-Origin'  => '*',
-                'Access-Control-Allow-Methods' => 'POST, GET, OPTIONS, PUT, DELETE',
-                'Access-Control-Allow-Headers' => 'X-Requested-With, Content-Type, X-Auth-Token, Origin, Authorization, X-XSRF-TOKEN'
+                'Access-Control-Allow-Credentials' => 'true',
+                'Access-Control-Allow-Methods'     => 'POST, GET, OPTIONS, PUT, DELETE',
+                'Access-Control-Allow-Headers'     => 'X-Requested-With, Content-Type, X-Auth-Token, Origin, Authorization, X-XSRF-TOKEN, Access-Control-Allow-Credentials'
             ];
 
             return response('You are connected to the API', 200, $headers);
