@@ -180,7 +180,7 @@ Blade::directive(
 
         $componentName = $expressionParts[0];
         $componentName = trim($componentName, '\'"');
-        $componentId   = uniqid($componentName . '_');
+        $componentId   = $componentName  . '_' . str_random();
         $arguments     = isset($expressionParts[1]) ? $expressionParts[1] : '[]';
 
         return "
