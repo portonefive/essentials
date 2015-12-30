@@ -13,11 +13,11 @@ if ( ! function_exists('visitor')) {
     {
         $auth = app('auth');
 
-        if ( ! $auth->check()) {
+        if ( ! $auth->guard()->check()) {
             return false;
         }
 
-        return $key == null ? $auth->user() : object_get($auth->user(), $key);
+        return $key == null ? $auth->guard()->user() : object_get($auth->guard()->user(), $key);
     }
 }
 
