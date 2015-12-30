@@ -81,13 +81,14 @@ class Router extends \Illuminate\Routing\Router
         }
 
         if ($request instanceof Request && $request->wantsJson()) {
+
             $response = [
                 'messages' => messages()->all(),
                 'title'    => ! empty($response['title']) ? $response['title'] : null,
-                'data'     => $response->getData(),
+                'data'     => array_except($response->getData(), 'html'),
                 'response' => [
                     'html'     => $response['html'],
-                    'sections' => is_array($sections) ? $sections : [],
+                    'sections' => array_merge((array)$sections, $response->renderSections())
                 ]
             ];
         }
