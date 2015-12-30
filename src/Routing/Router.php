@@ -88,7 +88,7 @@ class Router extends \Illuminate\Routing\Router
                 'data'     => array_except($response->getData(), 'html'),
                 'response' => [
                     'html'     => $response['html'],
-                    'sections' => array_merge((array)$sections, $response->renderSections())
+                    'sections' => array_except(array_merge((array)$sections, $response->renderSections()), '__content')
                 ]
             ];
         }
