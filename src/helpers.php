@@ -5,15 +5,16 @@ use Illuminate\Contracts\Auth\Access\Gate;
 if ( ! function_exists('visitor')) {
     /**
      * @param null                 $key
+     * @param string               $guard
      *
      * @var \Illuminate\Auth\Guard $auth
      * @return \PortOneFive\Essentials\Users\User|false
      */
-     function visitor($key = null)
+     function visitor($key = null, $guard = null)
     {
         $auth = app('auth');
 
-        if ( ! $auth->guard()->check()) {
+        if ( ! $auth->guard($guard)->check()) {
             return false;
         }
 
