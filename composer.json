@@ -9,7 +9,7 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "laravelcollective/html": "5.2.*",
+        "laravelcollective/html": "5.1.*",
         "raveren/kint": "1.0.*",
         "portonefive/tabulator" : "@dev"
     },
