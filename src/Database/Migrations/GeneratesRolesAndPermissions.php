@@ -101,4 +101,17 @@ trait GeneratesRolesAndPermissions
             $role->permissions()->attach($permissionIds);
         }
     }
+
+    protected function revokePermissionsFromRoles()
+    {
+        if (empty($this->permissionRoles)) {
+            return;
+        }
+
+        foreach ($this->permissionRoles as $roleId => $permissionIds) {
+            /** @var Role $role */
+            $role = \PortOneFive\Essentials\Users\Roles\Role::findOrFail($roleId);
+            $role->permissions()->detach($permissionIds);
+        }
+    }
 }
