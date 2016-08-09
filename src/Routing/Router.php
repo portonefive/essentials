@@ -80,7 +80,7 @@ class Router extends \Illuminate\Routing\Router
             }
         }
 
-        if ($request instanceof Request && $request->wantsJson()) {
+        if ($request instanceof Request && ($request->wantsJson() || $request->has('callback'))) {
 
             $response = [
                 'messages' => messages()->all(),
@@ -88,9 +88,13 @@ class Router extends \Illuminate\Routing\Router
                 'data'     => array_except($response->getData(), 'html'),
                 'response' => [
                     'html'     => $response['html'],
-                    'sections' => array_except(array_merge((array)$sections, $response->renderSections()), '__content')
-                ]
+                    'sections' => array_except(array_merge((array) $sections, $response->renderSections()), '__content'),
+                ],
             ];
+
+            if ($request->has('callback')) {
+                $response = $request->get('callback') . '(' . json_encode($response) . ')';
+            }
         }
 
         return $response;
