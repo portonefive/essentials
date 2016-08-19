@@ -1,6 +1,6 @@
 <?php namespace PortOneFive\Essentials\Html;
 
-use Illuminate\Html\FormBuilder as BaseFormBuilder;
+use Collective\Html\FormBuilder as BaseFormBuilder;
 
 class FormBuilder extends BaseFormBuilder
 {

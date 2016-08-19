@@ -1,6 +1,6 @@
 <?php namespace PortOneFive\Essentials\Html;
 
-use Illuminate\Html\HtmlBuilder as BaseHtmlBuilder;
+use Collective\Html\HtmlBuilder as BaseHtmlBuilder;
 use Route;
 
 class HtmlBuilder extends BaseHtmlBuilder
