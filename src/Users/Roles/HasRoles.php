@@ -31,13 +31,4 @@ trait HasRoles
         return $this->belongsToMany(Role::class, 'role_user', 'user_id');
     }
 
-    /**
-     * Return a collection of Roles without eager loading Permissions
-     * @return mixed
-     */
-    public function getRolesWithoutPermissionsAttribute()
-    {
-        return $this->roles()->setEagerLoads([])->get();
-    }
-
 }
