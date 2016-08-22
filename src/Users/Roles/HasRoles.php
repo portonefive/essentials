@@ -40,4 +40,12 @@ trait HasRoles
         return $this->roles()->setEagerLoads([])->get();
     }
 
+    /**
+     * Return a collection of Roles without eager loading Permissions
+     * @return mixed
+     */
+    public function rolesWithoutPermissions()
+    {
+        return $this->roles_without_permissions;
+    }
 }
