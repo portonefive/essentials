@@ -62,7 +62,7 @@ Blade::directive(
 Blade::directive(
     'breadcrumb',
     function ($expression) {
-        return "<?php HTML::breadcrumb{$expression}; ?>";
+        return "<?php HTML::breadcrumb({$expression}); ?>";
     }
 );
 
