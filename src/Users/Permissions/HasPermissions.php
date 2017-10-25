@@ -73,7 +73,7 @@ trait HasPermissions
         $permissions[$this->id] = [];
 
         foreach ($this->roles as $role) {
-            $permissions[$this->id] = array_merge($permissions[$this->id], $role->permissions->lists('id')->all());
+            $permissions[$this->id] = array_merge($permissions[$this->id], $role->permissions->pluck('id')->all());
         }
 
         return $permissions[$this->id] = array_unique($permissions[$this->id]);
