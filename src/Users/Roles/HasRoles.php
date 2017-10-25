@@ -7,7 +7,7 @@ trait HasRoles
      *
      * @return bool
      */
-    public function is($roles)
+    public function isRole($roles)
     {
         $userRoles = $this->roles->lists('id')->all();
         $orRoles   = explode('|', $roles);
