@@ -106,14 +106,14 @@ Blade::directive(
 Blade::directive(
     'can',
     function ($expression) {
-        return "<?php if (visitor() && visitor()->can{$expression}) : ?>";
+        return "<?php if (visitor() && visitor()->can({$expression})) : ?>";
     }
 );
 
 Blade::directive(
     'elseifcan',
     function ($expression) {
-        return "<?php elseif (visitor() && visitor()->can{$expression}) : ?>";
+        return "<?php elseif (visitor() && visitor()->can({$expression})) : ?>";
     }
 );
 
